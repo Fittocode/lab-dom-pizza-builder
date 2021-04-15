@@ -92,26 +92,23 @@ function renderButtons() {
     }
 }
 
+// I want to be able to activate a button and have its corresponding ingredient
+// be added to the list of prices. Conversely, if I deactivate the button, the corresponding price is removed
+
 function renderPrice() {
   // Iteration 4: change the HTML of `<aside class="panel price">
-  document.querySelectorAll('.btn').forEach(button => {
-    if (button.classList.contains('active')) {
-      var ul = document.querySelector(".price ul");
-      var li = document.createElement("li");
-      if (button.innerText === "White sauce") {
-        li.appendChild(document.createTextNode("$3 " + button.innerText))
-      } else if (button.innerText === "Gluten-free crust") {
-        li.appendChild(document.createTextNode("$5 " + button.innerText));
-      }  else {
-        li.appendChild(document.createTextNode("$1 " + button.innerText));
-      }
-      ul.appendChild(li);
-      } else {
-        
-      }
-    })
-  }
+  let pizzaPrice = basePrice
+  let priceList = document.querySelector('.price ul')
+  priceList.innerText = ""
 
+  for (let i in ingredients) {
+    if (state[i]) {
+      pizzaPrice += ingredients[i].price
+      priceList.innerHTML += `<li>$${ingredients[i].price} ${ingredients[i].name}</li>`
+    }
+    document.querySelector('.price strong').innerText = '$' + pizzaPrice
+  }
+}
 renderEverything();
 
 // Iteration 1: Example of a click event listener on `<button class="btn btn-pepperoni">`
@@ -134,7 +131,6 @@ document.querySelector('.btn.btn-green-peppers').addEventListener('click', () =>
 // Iteration 2: Add click event listener on `<button class="btn btn-sauce">`
 document.querySelector('.btn.btn-sauce').addEventListener('click', () => {
   state.whiteSauce = !state.whiteSauce
-  console.log(state.whiteSauce)
   renderEverything()
 })
 
@@ -145,13 +141,28 @@ document.querySelector('.btn.btn-crust').addEventListener('click', () => {
 })
 
 
-// if (state.pepperoni) {
-//   var ul = document.querySelector(".price ul");
-//   var li = document.createElement("li");
-//   li.appendChild(document.createTextNode("$1" + button.innerText));
-//   ul.appendChild(li);
-// } else {
-  var ul = document.querySelector(".price ul");
-  var item = document.querySelector('.pepperoni')
-  ul.removeChild(item)
-//   }
+
+// if (document.querySelectorAll('.btn').classList.contains('active')) {
+  //   switch (document.querySelector('.btn').innerHTML) {
+  //     case 'Pepperoni': 
+  //     li.innerHTML = "$1 Pepperoni"
+  //     total += 1
+  //     break;
+  //     case 'Mushrooms': 
+  //     li.innerHTML = "$1 Mushrooms"
+  //     total += 1
+  //     break;
+  //     case 'Green Peppers': 
+  //     li.innerHTML = "$1 Green Peppers"
+  //     total += 1
+  //     break;
+  //     case 'White sauce': 
+  //     li.innerHTML = "$3 White sauce"
+  //     total += 3
+  //     break;
+  //     case 'Gluten-free crust': 
+  //     li.innerHTML = "$5 Gluten-free crust"
+  //     total += 5
+  //     break;
+  //   }
+  //   ul.append(li)
